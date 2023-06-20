@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -165,7 +166,12 @@ public class ValidationItemControllerV2 {
     public String addItemV4(@ModelAttribute Item item, BindingResult bindingResult,
                             RedirectAttributes redirectAttributes, Model model) {
 
+
         // 검증 로직
+        // 아래 코드블럭과 같은 내용이지만, 제공하는 기능이 적다
+        ValidationUtils.rejectIfEmptyOrWhitespace(bindingResult, "itemName", "required");
+
+        /*
         if (!StringUtils.hasText(item.getItemName())) {
             // BindingResult 는 target 객체 바로 뒤에 선언되므로 target 정보를 알 수 있다
             // 이를 응용해 코드를 많이 줄일 수 있다.
@@ -174,6 +180,7 @@ public class ValidationItemControllerV2 {
             // errorCode="required" == new String[]{"required.item.itemName","required"} <<---- (더 디테일한 코드가 우선순위가 높다)
             bindingResult.rejectValue("itemName", "required");
         }
+        */
         if (item.getPrice() == null || item.getPrice() < 1000 || item.getPrice() > 1000000) {
             bindingResult.rejectValue("price", "range", new Object[]{1000, 1000000}, null);
         }
