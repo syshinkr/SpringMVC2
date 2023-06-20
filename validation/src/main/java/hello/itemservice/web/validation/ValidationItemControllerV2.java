@@ -171,6 +171,7 @@ public class ValidationItemControllerV2 {
             // 이를 응용해 코드를 많이 줄일 수 있다.
             // BindingResult.rejectValue() <== 필드 에러
             // BindingResult.reject() <== 오브젝트 에러
+            // errorCode="required" == new String[]{"required.item.itemName","required"} <<---- (더 디테일한 코드가 우선순위가 높다)
             bindingResult.rejectValue("itemName", "required");
         }
         if (item.getPrice() == null || item.getPrice() < 1000 || item.getPrice() > 1000000) {
