@@ -2,6 +2,7 @@ package hello.login;
 
 import hello.login.web.filter.LogFilter;
 import hello.login.web.filter.LoginCheckFilter;
+import hello.login.web.interceptor.LoginCheckInterceptor;
 import hello.login.web.interceptor.LoginInterceptor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +22,12 @@ public class WebConfig implements WebMvcConfigurer {
                 // 하위도 전부 다
                 .addPathPatterns("/**")
                 .excludePathPatterns("/css/**", "/*.ico", "/error");
+
+        registry.addInterceptor(new LoginCheckInterceptor())
+                .order(2)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/", "/members/add", "/login", "/logout",
+                        "/css/**", "/*.ico", "/error");
     }
 
 //    @Bean
@@ -33,7 +40,7 @@ public class WebConfig implements WebMvcConfigurer {
         return filterFilterRegistrationBean;
     }
 
-    @Bean
+//    @Bean
     public FilterRegistrationBean loginCheckFilter() {
         FilterRegistrationBean<Filter> filterFilterRegistrationBean = new FilterRegistrationBean<>();
         filterFilterRegistrationBean.setFilter(new LoginCheckFilter());
